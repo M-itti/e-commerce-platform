@@ -9,4 +9,17 @@ const getSellerProducts = async (sellerId) => {
     return await Product.find({ seller: sellerId });
 };
 
-module.exports = { createProduct, getSellerProducts };
+const deleteProductById = async (id) => {
+    return await Product.findByIdAndDelete(id);
+};
+
+const updateProductById = async (id, updateData) => {
+    return await Product.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+};
+
+module.exports = { 
+    createProduct,
+    getSellerProducts,
+    deleteProductById,
+    updateProductById
+};

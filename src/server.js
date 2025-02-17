@@ -1,17 +1,14 @@
-const mongoose = require('mongoose');
-const app = require('./app');
+require('dotenv').config();  
+const express = require('express');
+const connectMongoDB = require('./config/mongodb'); 
+const { connectRedis } = require('./config/redis');  
 
-const PORT = 8080;
-mongoose.connect('mongodb://127.0.0.1:27017/db');
+const app = express();
+const PORT = process.env.SERVER_PORT
 
-mongoose.connection.on('connected', async () => {
-  console.log('Connected to MongoDB');
-});
+connectMongoDB();
+connectRedis();
 
-mongoose.connection.on('error', (err) => {
-  console.error('MongoDB connection error:', err);
-  process.exit(1); 
-});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

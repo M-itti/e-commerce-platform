@@ -32,6 +32,24 @@ const getSellerProducts = async (req, res) => {
     }
 };
 
+// delete product by id
+const deleteProductById = async (req, res) => {
+    try {
+        const { id } = req.params; 
+
+        const deletedProduct = await productService.deleteProductById(id);
+
+        if (!deletedProduct) {
+            return res.status(httpStatus.NOT_FOUND).json({ error: 'Product not found' });
+        }
+
+        res.status(httpStatus.OK).json({ message: 'Product deleted successfully' });
+    } catch (err) {
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: err.message });
+    }
+};
+
+
 const getAllProducts = async (req, res, next) => {
     try {
         res.status(httpStatus.CREATE).json({
@@ -43,8 +61,26 @@ const getAllProducts = async (req, res, next) => {
     }
 }
 
+const updateProductById = async (req, res) => {
+    try {
+        const { id } = req.params; 
+        const updateData = req.body; 
+
+        const updatedProduct = await productService.updateProductById(id, updateData);
+
+        if (!updatedProduct) {
+            return res.status(httpStatus.NOT_FOUND).json({ error: 'Product not found' });
+        }
+
+        res.status(httpStatus.OK).json(updatedProduct);
+    } catch (err) {
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: err.message });
+    }
+};
+
 module.exports = { 
     getAllProducts,
     createProduct,
-    getSellerProducts 
+    getSellerProducts,
+    updatedProductById
 };

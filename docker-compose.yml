@@ -9,6 +9,17 @@ services:
     command: ["mongod", "--noauth"]
     restart: always
 
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: always
+
 volumes:
   mongodb_data:
+    driver: local
+  redis_data:
     driver: local

@@ -57,7 +57,7 @@ async function logUser(username, password) {
 }
 
 
-async function registerSeller(name, email, password) {
+async function createSeller(name, email, password) {
     const existingSeller = await Seller.findOne({ email });
     if (existingSeller) throw new Error("Email already in use");
 
@@ -66,7 +66,7 @@ async function registerSeller(name, email, password) {
     return { message: "Seller registered successfully" };
 }
 
-async function loginSeller(email, password) {
+async function logSeller(email, password) {
     const seller = await Seller.findOne({ email });
     if (!seller) throw new Error("Invalid email or password");
 
@@ -82,4 +82,4 @@ async function loginSeller(email, password) {
     return { token };
 }
 
-module.exports = { createUser, logUser, loginSeller, registerSeller };
+module.exports = { createUser, logUser, logSeller, createSeller };
