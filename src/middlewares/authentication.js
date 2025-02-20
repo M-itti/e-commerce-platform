@@ -6,7 +6,7 @@ const { Strategy, ExtractJwt } = passportJwt;
 
 const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: "your_jwt_secret_key", // Use environment variables in production
+    secretOrKey: "your_jwt_secret_key", 
 };
 
 passport.use(

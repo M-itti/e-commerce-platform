@@ -1,58 +1,11 @@
 const HttpException = require('../utils/HttpException');
 const productService = require("../services/product.service");
-const httpStatus = require('http-status');
-
-// Create a Product
-const createProduct = async (req, res) => {
-    try {
-        const { name, price, stock, description, category } = req.body;
-        const productData = {
-            name,
-            price,
-            stock,
-            description,
-            category,
-            seller: req.user._id,
-        };
-
-        const product = await productService.createProduct(productData);
-        res.status(httpStatus.CREATE).json(product);
-    } catch (err) {
-        res.status(httpStatus.UNAUTHORIZED).json({ error: err.message });
-    }
-};
-
-// Get Seller's Products
-const getSellerProducts = async (req, res) => {
-    try {
-        const products = await productService.getSellerProducts(req.user._id);
-        res.json(products);
-    } catch (err) {
-        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: err.message });
-    }
-};
-
-// delete product by id
-const deleteProductById = async (req, res) => {
-    try {
-        const { id } = req.params; 
-
-        const deletedProduct = await productService.deleteProductById(id);
-
-        if (!deletedProduct) {
-            return res.status(httpStatus.NOT_FOUND).json({ error: 'Product not found' });
-        }
-
-        res.status(httpStatus.OK).json({ message: 'Product deleted successfully' });
-    } catch (err) {
-        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: err.message });
-    }
-};
-
+const { redisClient } = require('../config/redis_cache');
+const { status } = require('http-status');
 
 const getAllProducts = async (req, res, next) => {
     try {
-        res.status(httpStatus.CREATE).json({
+        res.status(status.CREATED).json({
           success: true,
         });
     } catch(err) {
@@ -61,26 +14,34 @@ const getAllProducts = async (req, res, next) => {
     }
 }
 
-const updateProductById = async (req, res) => {
+const getProductById = async (req, res, next) => {
     try {
-        const { id } = req.params; 
-        const updateData = req.body; 
+        const { id } = req.params;
 
-        const updatedProduct = await productService.updateProductById(id, updateData);
-
-        if (!updatedProduct) {
-            return res.status(httpStatus.NOT_FOUND).json({ error: 'Product not found' });
+        // Check Redis cache
+        const cachedProduct = await redisClient.get(`product:${id}`);
+        if (cachedProduct) {
+            console.log("Cache hit");
+            return res.status(status.OK).json(JSON.parse(cachedProduct));
         }
 
-        res.status(httpStatus.OK).json(updatedProduct);
+        console.log("Cache miss");
+        // Fetch from DB if not cached
+        const product = await productService.getProductById(id);
+        if (!product) {
+            return res.status(status.NOT_FOUND).json({ error: 'Product not found' });
+        }
+
+        await redisClient.set(`product:${id}`, JSON.stringify(product), 'EX', 3600); 
+
+        res.status(status.OK).json(product);
     } catch (err) {
-        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: err.message });
+        console.error(err);
+        next(err);
     }
 };
 
 module.exports = { 
     getAllProducts,
-    createProduct,
-    getSellerProducts,
-    updatedProductById
+    getProductById,
 };

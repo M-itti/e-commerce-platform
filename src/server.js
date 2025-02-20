@@ -1,9 +1,9 @@
 require('dotenv').config();  
 const express = require('express');
 const connectMongoDB = require('./config/mongodb'); 
-const { connectRedis } = require('./config/redis');  
+const { connectRedis } = require('./config/redis_cache');  
 
-const app = express();
+const app = require('./app');
 const PORT = process.env.SERVER_PORT
 
 connectMongoDB();

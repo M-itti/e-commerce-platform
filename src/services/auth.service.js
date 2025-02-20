@@ -76,7 +76,7 @@ async function logSeller(email, password) {
     const token = jwt.sign(
         { id: seller._id, role: "seller" }, // Include role here
         "your_jwt_secret_key",
-        { expiresIn: "1h" }
+        { expiresIn: "7d" }
     );
 
     return { token };

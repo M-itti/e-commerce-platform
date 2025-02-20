@@ -1,8 +1,4 @@
 const roleVerifier = (role) => (req, res, next) => {
-    console.log("User object:", req.user); // Debugging
-    console.log("JWT role:", req.user.jwt_role); // Corrected from req.user.jwt_payload.role
-    console.log("Expected role:", role);
-
     if (!req.user) {
         return res.status(401).json({ message: "Unauthorized: User not authenticated" });
     }
