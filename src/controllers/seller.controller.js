@@ -60,7 +60,7 @@ const deleteProductById = async (req, res) => {
             return res.status(status.NOT_FOUND).json({ error: 'Product not found' });
         }
 
-        // Invalidate cache
+        // cache deletion
         await redisClient.del(`product:${deletedProduct._id.toString()}`);
         console.log("Cache deleted for product:", deletedProduct._id.toString());
 
@@ -70,7 +70,7 @@ const deleteProductById = async (req, res) => {
     }
 };
 
-// update product by id
+// Update product by id
 const updateProductById = async (req, res) => {
     try {
         const { id } = req.params; 
@@ -81,8 +81,9 @@ const updateProductById = async (req, res) => {
         if (!updatedProduct) {
             return res.status(status.NOT_FOUND).json({ error: 'Product not found' });
         }
-        // Invalidate cache         
-        await redisClient.del(`product:${updatedProduct._id.toString()}`);
+
+        const cacheKey = `product:${updatedProduct._id.toString()}`;
+        await redisClient.setex(cacheKey, 3600, JSON.stringify(updatedProduct)); 
         console.log("Cache updated for product:", updatedProduct._id.toString());
 
         res.status(status.OK).json(updatedProduct);
