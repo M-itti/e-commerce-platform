@@ -83,7 +83,10 @@ const updateProductById = async (req, res) => {
         }
 
         const cacheKey = `product:${updatedProduct._id.toString()}`;
-        await redisClient.setex(cacheKey, 3600, JSON.stringify(updatedProduct)); 
+        await redisClient.set(cacheKey, JSON.stringify(updatedProduct), {
+          EX: 600, 
+          NX: true
+        });
         console.log("Cache updated for product:", updatedProduct._id.toString());
 
         res.status(status.OK).json(updatedProduct);
