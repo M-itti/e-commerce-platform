@@ -1,23 +1,16 @@
 const express = require('express');
 const morgan = require('morgan');
 
-const authRoute = require('./routes/v1/auth.route');
-const productRoute = require('./routes/v1/product.route');
-const sellerRoute = require('./routes/v1/seller.route');
+const routes = require('./routes/v1');
 const passport = require('./middlewares/authentication');
 
 const app = express();
 
-// middlewares
 app.use(morgan('tiny'));
 app.use(express.json())
 app.use(passport.initialize())
 app.use(express.urlencoded({ extended: true }))
-
-// TODO handle root of the parent route
-app.use('/', authRoute)
-app.use('/', productRoute)
-app.use('/', sellerRoute)
+app.use('/api/v1', routes)
 
 // TODO: should this be seperated?
 // error handling for middleware
