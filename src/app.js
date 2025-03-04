@@ -3,6 +3,7 @@ const morgan = require('morgan');
 
 const routes = require('./routes/v1');
 const passport = require('./middlewares/authentication');
+const { rateLimiter } = require('./middlewares/rateLimiter');
 
 const app = express();
 
@@ -10,6 +11,7 @@ app.use(morgan('tiny'));
 app.use(express.json())
 app.use(passport.initialize())
 app.use(express.urlencoded({ extended: true }))
+app.use(rateLimiter);
 app.use('/api/v1', routes)
 
 // TODO: should this be seperated?
