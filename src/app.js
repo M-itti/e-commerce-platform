@@ -14,9 +14,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(rateLimiter);
 app.use('/api/v1', routes)
 
-// TODO: should this be seperated?
-// error handling for middleware
-// User already exist should be logging output not error
+// TODO User already exist should be logging output not error
 app.use((err, req, res, next) => {
   if (err && err.name === 'UnauthorizedError') {
     return res.status(401).json({

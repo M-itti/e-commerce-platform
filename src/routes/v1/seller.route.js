@@ -1,5 +1,5 @@
 const express = require('express');
-const roleVerifier = require('../../middlewares/role.verifier')
+const roleVerifier = require('../../middlewares/roleVerifier')
 const passport = require("../../middlewares/authentication");
 
 const { 
