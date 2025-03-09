@@ -6,7 +6,9 @@ const getAllProducts = async (req, res, next) => {
     try {
         const { page = 1, limit = 10 } = req.query;
         const products = await productService.getAllProducts(parseInt(page), parseInt(limit));
+
         res.status(status.OK).json(products);
+
     } catch (err) {
         console.error(err);
         next(err);
@@ -23,6 +25,7 @@ const getProductById = async (req, res, next) => {
         }
         
         res.status(status.OK).json(product);
+
     } catch (err) {
         console.error(err);
         next(err);

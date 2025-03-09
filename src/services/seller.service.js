@@ -18,12 +18,10 @@ const getSellerProducts = async (sellerId) => {
     // Check if data exists in cache
     const cachedData = await redisClient.get(cacheKey);
     if (cachedData) {
-        console.log("Cache hit for seller products");
         return JSON.parse(cachedData);
     }
     
     // Fetch from database if not in cache
-    console.log("Cache miss for seller products");
     const products = await Product.find({ seller: sellerId });
     
     // Store in Redis with expiry of 10 minutes

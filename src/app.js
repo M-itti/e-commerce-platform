@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const routes = require('./routes/v1');
 const passport = require('./middlewares/authentication');
 const { rateLimiter } = require('./middlewares/rateLimiter');
+const { swaggerUi, swaggerDocs } = require("./middlewares/swagger");
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(passport.initialize())
 app.use(express.urlencoded({ extended: true }))
 app.use(rateLimiter);
 app.use('/api/v1', routes)
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // TODO User already exist should be logging output not error
 app.use((err, req, res, next) => {

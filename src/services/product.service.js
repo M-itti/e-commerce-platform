@@ -1,16 +1,16 @@
 const Product = require('../models/product.model');
 const { redisClient } = require('../config/redis_cache');
+const HttpException = require('../utils/HttpException');
+const { status } = require('http-status');
 
 const getAllProducts = async (page = 1, limit = 10) => {
     const cacheKey = `products:page=${page}&limit=${limit}`;
     const cachedProducts = await redisClient.get(cacheKey);
     
     if (cachedProducts) {
-        console.log("Cache hit");
         return JSON.parse(cachedProducts);
     }
     
-    console.log("Cache miss");
     const options = {
         page: parseInt(page),
         limit: parseInt(limit),
@@ -28,11 +28,9 @@ const getProductById = async (id) => {
     const cachedProduct = await redisClient.get(cacheKey);
     
     if (cachedProduct) {
-        console.log("Cache hit");
         return JSON.parse(cachedProduct);
     }
     
-    console.log("Cache miss");
     // Fetch from DB if not cached
     const product = await Product.findById(id);
     
