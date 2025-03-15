@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const User = require('../models/user.model');
-const Seller = require('../models/seller.model');
 const HttpException = require('../utils/HttpException');
 
 require('dotenv').config();
@@ -11,75 +10,80 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS, 10);
 const TOKEN_EXPIRATION = process.env.TOKEN_EXPIRATION;
 
-async function createUser(username, password) {
-    // check if already registered
-    const usernameExists = await User.exists({ username: username });
+// Create User (Customer)
+async function createUser(username, password, email) {
+    const usernameExists = await User.exists({ username });
     if (usernameExists) {
-        throw new HttpException(409, "Username already exist")
+        throw new HttpException(409, "Username already exists");
     }
-    
-    // hash the password before saving it into the database
+
+    const emailExists = await User.exists({ email });
+    if (emailExists) {
+        throw new HttpException(409, "Email already exists");
+    }
+
     const hashedPass = await bcrypt.hash(password, SALT_ROUNDS);
-    
-    const user = new User({ username: username, password: hashedPass });
+    const user = new User({ username, email, password: hashedPass });
     await user.save();
 
-    const token = jwt.sign({ username: username }, JWT_SECRET, { expiresIn: TOKEN_EXPIRATION });
+    const token = jwt.sign({ username, email, role: "customer" }, JWT_SECRET, { expiresIn: TOKEN_EXPIRATION });
 
-    return token;
+    return { email, username, token };
 }
 
-async function logUser(username, password) {
-    if (!username || !password) {
-        throw new HttpException(409, "Username or password are required")
-    }
-
-    // Find the user by username if doesn't exist return 401
-    const user = await User.findOne({ username })
+// User Login (Customer)
+async function logUser(username, password, email) {
+    const user = await User.findOne({ username });
     if (!user) {
-       throw new HttpException(401, 'Invalid credentials');
+        throw new HttpException(401, "Invalid credentials");
     }
-    
-    // check if the password entered by user matches the hashed version on database
-    const isMatch = await bcrypt.compare(password, user.password)
+
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-        throw new HttpException(401, 'Invalid credentials');
+        throw new HttpException(401, "Invalid credentials");
     }
 
-    const token = jwt.sign(
-        { 
-            username: username,
-            role: "user"
-        }
-        , JWT_SECRET, { expiresIn: TOKEN_EXPIRATION });
+    const token = jwt.sign({ username, email, role: "customer" }, JWT_SECRET, { expiresIn: TOKEN_EXPIRATION });
 
-    return token;
+    return { email, username, token };
 }
 
+// Create Seller
+async function createSeller(username, email, password) {
+    const usernameExists = await User.exists({ username });
+    if (usernameExists) {
+        throw new HttpException(409, "Username already exists");
+    }
 
-async function createSeller(name, email, password) {
-    const existingSeller = await Seller.findOne({ email });
-    if (existingSeller) throw new Error("Email already in use");
+    const emailExists = await User.exists({ email });
+    if (emailExists) {
+        throw new HttpException(409, "Email already exists");
+    }
 
-    const seller = new Seller({ name, email, password });
+    const hashedPass = await bcrypt.hash(password, SALT_ROUNDS);
+    const seller = new User({ username, email, password: hashedPass });
     await seller.save();
-    return { message: "Seller registered successfully" };
+
+    const token = jwt.sign({ username, email, role: "seller" }, JWT_SECRET, { expiresIn: TOKEN_EXPIRATION });
+
+    return { username, email, token };
 }
 
-async function logSeller(email, password) {
-    const seller = await Seller.findOne({ email });
-    if (!seller) throw new Error("Invalid email or password");
+// Seller Login
+async function logSeller(username, email, password) {
+    const seller = await User.findOne({ email });
+    if (!seller) {
+        throw new HttpException(401, "Invalid credentials");
+    }
 
     const isMatch = await bcrypt.compare(password, seller.password);
-    if (!isMatch) throw new Error("Invalid email or password");
+    if (!isMatch) {
+        throw new HttpException(401, "Invalid credentials");
+    }
 
-    const token = jwt.sign(
-        { id: seller._id, role: "seller" }, // Include role here
-        "your_jwt_secret_key",
-        { expiresIn: "7d" }
-    );
+    const token = jwt.sign({ username, email, role: "seller" }, JWT_SECRET, { expiresIn: TOKEN_EXPIRATION });
 
-    return { token };
+    return { username, email, token };
 }
 
 module.exports = { createUser, logUser, logSeller, createSeller };

@@ -1,6 +1,6 @@
 const passport = require("passport");
 const passportJwt = require("passport-jwt");
-const Seller = require("../models/seller.model");
+const User = require("../models/user.model");
 
 const { Strategy, ExtractJwt } = passportJwt;
 
@@ -12,17 +12,17 @@ const opts = {
 passport.use(
     new Strategy(opts, async (jwt_payload, done) => {
         try {
-            // Find the seller based on the id from the JWT
-            const seller = await Seller.findById(jwt_payload.id);
+            // Find the user based on the id from the JWT
+            const user = await User.findById(jwt_payload.id);
             
-            // If seller found, attach the role from jwt_payload and the seller document
-            if (seller) {
+            // If user found, attach the role from jwt_payload and the user document
+            if (user) {
                 // Attach role from JWT payload to the req.user object
-                seller.jwt_role = jwt_payload.role; 
-                return done(null, seller); 
+                user.jwt_role = jwt_payload.role; 
+                return done(null, user); 
             }
             
-            return done(null, false, "Seller not found");
+            return done(null, false, "user not found");
         } catch (err) {
             return done(err, false, "Invalid Token");
         }

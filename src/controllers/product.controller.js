@@ -10,7 +10,6 @@ const getAllProducts = async (req, res, next) => {
         res.status(status.OK).json(products);
 
     } catch (err) {
-        console.error(err);
         next(err);
     }
 };
@@ -27,7 +26,6 @@ const getProductById = async (req, res, next) => {
         res.status(status.OK).json(product);
 
     } catch (err) {
-        console.error(err);
         next(err);
     }
 };

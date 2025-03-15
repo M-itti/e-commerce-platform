@@ -16,22 +16,23 @@ app.use(rateLimiter);
 app.use('/api/v1', routes)
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// TODO User already exist should be logging output not error
 app.use((err, req, res, next) => {
   if (err && err.name === 'UnauthorizedError') {
     return res.status(401).json({
-      status: 'error',
+      success: false,
       message: 'missing authorization credentials',
     });
+
   } else if (err && err.statusCode) {
       res.status(err.statusCode).json({
-          status: 'error',
+          success: false,
           message: err.message
       });
+
   } else if (err) {
     const message = typeof err.message === 'string' ? err.message : 'Internal Server Error';
     res.status(500).json({
-        status: 'error',
+        success: false,
         message
     });
   }
