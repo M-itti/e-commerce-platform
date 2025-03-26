@@ -8,7 +8,7 @@ const getSellerProducts = async (req, res) => {
         const products = await sellerService.getSellerProducts(sellerId);
         res.json(products);
     } catch (err) {
-        res.status(status.INTERNAL_SERVER_ERROR).json({ error: err.message });
+      next(err)
     }
 };
 
@@ -27,7 +27,7 @@ const createProduct = async (req, res) => {
         const product = await sellerService.createProduct(productData);
         res.status(status.CREATED).json(product);
     } catch (err) {
-        res.status(status.UNAUTHORIZED).json({ error: err.message });
+        next(err);
     }
 };
 
@@ -43,7 +43,7 @@ const deleteProductById = async (req, res) => {
         
         res.status(status.OK).json({ message: 'Product deleted successfully' });
     } catch (err) {
-        res.status(status.INTERNAL_SERVER_ERROR).json({ error: err.message });
+       next(err);
     }
 };
 
@@ -60,7 +60,7 @@ const updateProductById = async (req, res) => {
         
         res.status(status.OK).json(updatedProduct);
     } catch (err) {
-        res.status(status.INTERNAL_SERVER_ERROR).json({ error: err.message });
+       next(err);
     }
 };
 
