@@ -6,7 +6,7 @@ const {
   updateCartItem,
   decreaseCartItem,
   clearCart
-} = require('../../controllers/cart.controller'); // ✅ Check this path
+} = require('../../controllers/cart.controller'); 
 
 const roleVerifier = require('../../middlewares/roleVerifier');
 

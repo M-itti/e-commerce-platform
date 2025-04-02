@@ -1,10 +1,7 @@
 require("dotenv").config(); 
 
-const express = require("express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-
-const app = express();
 
 const swaggerOptions = {
   swaggerDefinition: {

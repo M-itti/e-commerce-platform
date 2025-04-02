@@ -5,7 +5,7 @@ const shoppingCartSchema = new mongoose.Schema({
   products: [
     {
       productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-      quantity: { type: Number, required: true, min: 1 }
+      quantity: { type: Number, required: true, min: 1 },
     }
   ],
   createdAt: { type: Date, default: Date.now }

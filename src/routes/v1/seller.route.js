@@ -3,10 +3,10 @@ const roleVerifier = require('../../middlewares/roleVerifier')
 const passport = require("../../middlewares/authentication");
 
 const { 
-    createProduct,
-    getSellerProducts,
-    deleteProductById,
-    updateProductById,
+  createProduct,
+  getSellerProducts,
+  deleteProductById,
+  updateProductById,
 } = require('../../controllers/seller.controller');
 
 const router = express.Router()

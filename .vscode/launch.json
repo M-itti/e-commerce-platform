@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "skipFiles": [
+                "<node_internals>/**",                            // Skips Node.js internal modules
+                "${workspaceFolder}/node_modules/**/*.js",         // Skips JavaScript files in node_modules (macOS/Linux)
+                "${workspaceFolder}/node_modules/**/*.cjs",        // Skips CommonJS files in node_modules (macOS/Linux)
+                "${workspaceFolder}/node_modules/**/*.mjs"         // Skips ES Module files (if applicable)
+            ],
+            "program": "${workspaceFolder}/src/server.js",       // Your entry point file
+            "console": "integratedTerminal",                      // Use integrated terminal for output
+            "envFile": "${workspaceFolder}/src/.env"             // Environment variables for your application
+        }
+    ]
+}
