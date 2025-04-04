@@ -1,17 +1,6 @@
 const sellerService = require("../services/seller.service");
 const { status } = require('http-status');
 
-// Get all Seller's Products
-const getSellerProducts = async (req, res, next) => {
-  try {
-    const sellerId = req.user._id;
-    const products = await sellerService.getSellerProducts(sellerId);
-    res.json(products);
-  } catch (err) {
-    next(err)
-  }
-};
-
 // Create a Product
 const createProduct = async (req, res, next) => {
   try {
@@ -28,6 +17,17 @@ const createProduct = async (req, res, next) => {
     res.status(status.CREATED).json(product);
   } catch (err) {
     next(err);
+  }
+};
+
+// Get all Seller's Products
+const getSellerProducts = async (req, res, next) => {
+  try {
+    const sellerId = req.user._id;
+    const products = await sellerService.getSellerProducts(sellerId);
+    res.json(products);
+  } catch (err) {
+    next(err)
   }
 };
 

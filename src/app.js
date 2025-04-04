@@ -5,6 +5,7 @@ const routes = require('./routes/v1');
 const passport = require('./middlewares/authentication');
 const { rateLimiter } = require('./middlewares/rateLimiter');
 const { swaggerUi, swaggerDocs } = require("./middlewares/swagger");
+const logger = require('./config/logger'); 
 
 const app = express();
 
@@ -13,10 +14,11 @@ app.use(express.json())
 app.use(passport.initialize())
 app.use(express.urlencoded({ extended: true }))
 app.use(rateLimiter);
-app.use('/api/v1', routes)
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/api/v1', routes)
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
+  logger.debug(`Error: ${err.message}, Stack: ${err.stack}`);
   if (err && err.name === 'UnauthorizedError') {
     return res.status(401).json({
       success: false,
