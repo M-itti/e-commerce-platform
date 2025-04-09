@@ -38,7 +38,6 @@ async function logUser(username, password, email) {
   if (!user) {
     throw new HttpException(status.UNAUTHORIZED, "Invalid credentials");
   }
-
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
     throw new HttpException(status.UNAUTHORIZED, "Invalid credentials");
@@ -50,7 +49,7 @@ async function logUser(username, password, email) {
 }
 
 // Create Seller
-async function createSeller(username, email, password) {
+async function createSeller(username, password, email) {
   const usernameExists = await User.exists({ username });
   if (usernameExists) {
     throw new HttpException(status.CONFLICT, "Username already exists");
@@ -71,7 +70,7 @@ async function createSeller(username, email, password) {
 }
 
 // Seller Login
-async function logSeller(username, email, password) {
+async function logSeller(username, password, email) {
   const seller = await User.findOne({ email });
   if (!seller) {
     throw new HttpException(status.UNAUTHORIZED, "Invalid credentials");

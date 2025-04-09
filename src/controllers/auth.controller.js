@@ -19,8 +19,8 @@ const userSignup = async (req, res, next) => {
 // User Login
 const userLogin = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
-    const result = await authService.logUser(username, password);
+    const { username, password, email} = req.body;
+    const result = await authService.logUser(username, password, email);
 
     res.status(status.OK).json({
       success: true,
@@ -34,8 +34,8 @@ const userLogin = async (req, res, next) => {
 // Seller Signup
 const sellerSignup = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
-    const result = await authService.createSeller(username, email, password);
+    const { username, password, email } = req.body;
+    const result = await authService.createSeller(username, password, email);
 
     res.status(status.CREATED).json({
       success: true,
@@ -49,8 +49,8 @@ const sellerSignup = async (req, res, next) => {
 // Seller Login
 const sellerLogin = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
-    const result = await authService.logSeller(username, email, password);
+    const { username, password, email } = req.body;
+    const result = await authService.logSeller(username, password, email);
 
     res.status(status.OK).json({
       success: true,

@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { createClient } = require('redis');
+const logger = require("./logger");
 
 const redisClient = createClient({
   socket: {
@@ -10,10 +11,10 @@ const redisClient = createClient({
 
 const connectRedis = async () => {
   redisClient.on('error', (err) => {
-    console.error('Redis client error', err);
+    logger.error('Redis client error', err);
   });
   redisClient.on('ready', () => {
-    console.log('Redis Connected');
+    logger.info('Redis Connected');
   });
 
   await redisClient.connect();

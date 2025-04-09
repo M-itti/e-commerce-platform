@@ -21,6 +21,7 @@ const logger = winston.createLogger({
         winston.format.colorize(),
         logFormat
       ),
+      //silent: process.env.NODE_ENV === 'test',
     }),
     // Additional transports can be added here (e.g., file transport)
   ],
