@@ -11,4 +11,4 @@ const shoppingCartSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-module.exports = shoppingCartSchema;
+module.exports = mongoose.model('ShoppingCart', shoppingCartSchema);

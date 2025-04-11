@@ -1,7 +1,7 @@
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
-const { RedisMemoryServer } = require('redis-memory-server');
 const mongoose = require("mongoose");
+const { RedisMemoryServer } = require('redis-memory-server');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const request = require('supertest');
 const app = require('../app');
