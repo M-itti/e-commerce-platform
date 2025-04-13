@@ -62,7 +62,7 @@ router.post('/cart', passport.authenticate('jwt', { session: false }), roleVerif
  * @swagger
  * /cart/{productId}:
  *   put:
- *     summary: Update the quantity of a product in the authenticated customer's cart
+ *     summary: add Update the quantity of a product in the authenticated customer's cart
  *     tags:
  *       - Cart
  *     security:

@@ -37,7 +37,7 @@ beforeAll(async () => {
     
   // generate jwt token for testing
   const res = await request(app)
-    .post(`${BASE_URL}/registerSeller`)
+    .post(`${BASE_URL}/sign-up`)
     .send({
       username: 'testuser',
       password: 'password',
@@ -103,7 +103,7 @@ describe('Shopping Cart API', () => {
 
     // Now update quantity
     const res = await request(app)
-      .patch(`${BASE_URL}/cart/:productId`)
+      .put(`${BASE_URL}/cart/:productId`)
       .set('Authorization', `Bearer ${token}`)
       .send({ productId, quantity: 3 });
 
@@ -119,15 +119,15 @@ describe('Shopping Cart API', () => {
       .send({ productId });
     
     await request(app)
-      .patch(`${BASE_URL}/cart`)
+      .put(`${BASE_URL}/cart/${productId}`)
       .set('Authorization', `Bearer ${token}`)
       .send({ productId, quantity: 2 });
-
+    
     // Now decrease it
     const res = await request(app)
-      .patch(`${BASE_URL}/cart/decrease/${productId}`)
+      .delete(`${BASE_URL}/cart/${productId}`)
       .set('Authorization', `Bearer ${token}`);
-
+    
     expect(res.statusCode).toBe(200);
     expect(res.body.products[0].quantity).toBe(1);
   });
@@ -140,7 +140,7 @@ describe('Shopping Cart API', () => {
 
     // Decrease once (should remove item)
     const res = await request(app)
-      .patch(`${BASE_URL}/cart/${productId}`)
+      .delete(`${BASE_URL}/cart/${productId}`)
       .set('Authorization', `Bearer ${token}`);
 
     expect(res.statusCode).toBe(200);
@@ -149,7 +149,7 @@ describe('Shopping Cart API', () => {
 
   it('should return the current user cart', async () => {
     await request(app)
-      .post(`${BASE_URL}/cart/add`)
+      .post(`${BASE_URL}/cart`)
       .set('Authorization', `Bearer ${token}`)
       .send({ productId });
 
@@ -163,12 +163,12 @@ describe('Shopping Cart API', () => {
 
   it('should clear the cart', async () => {
     await request(app)
-      .post(`${BASE_URL}/cart/add`)
+      .post(`${BASE_URL}/cart`)
       .set('Authorization', `Bearer ${token}`)
       .send({ productId });
 
     const res = await request(app)
-      .delete(`${BASE_URL}/cart/clear`)
+      .delete(`${BASE_URL}/cart`)
       .set('Authorization', `Bearer ${token}`);
 
     expect(res.statusCode).toBe(200);

@@ -89,10 +89,6 @@ describe('POST /api/v1/seller', () => {
 });
 
 describe('GET /seller/products', () => {
-  afterEach(async () => {
-    await redisClient.del(`seller:products:${sellerId}`);
-    await Product.deleteMany();
-  });
   beforeEach(async () => {
     await Product.deleteMany();
 
@@ -116,8 +112,12 @@ describe('GET /seller/products', () => {
         seller: sellerId,
       }
     ]);
-
     await redisClient.del(`seller:products:${sellerId}`);
+  });
+
+  afterEach(async () => {
+    await redisClient.del(`seller:products:${sellerId}`);
+    await Product.deleteMany();
   });
 
   it('should fetch seller products from DB and cache them', async () => {

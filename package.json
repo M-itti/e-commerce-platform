@@ -30,7 +30,7 @@
     "testcontainers": "^10.24.0"
   },
   "scripts": {
-    "test": "jest --verbose",
+    "test": "jest --runInBand --verbose",
     "test:watch": "jest --watch"
   }
 }

@@ -17,11 +17,12 @@ const logger = winston.createLogger({
   format: logFormat,
   transports: [
     new winston.transports.Console({
+      level: logLevel,
       format: winston.format.combine(
         winston.format.colorize(),
         logFormat
       ),
-      //silent: process.env.NODE_ENV === 'test',
+      silent: process.env.NODE_ENV === 'test',
     }),
     // Additional transports can be added here (e.g., file transport)
   ],

@@ -10,7 +10,7 @@ const roleVerifier = (role) => (req, res, next) => {
   }
 
   if (req.user.jwt_role !== role) {
-    return res.status(status.FORBIDDEN).json({ message: "Forbidden: Insufficient permissions" });
+    return res.status(403).json({ message: "Forbidden: Insufficient permissions" });
   }
 
   next();

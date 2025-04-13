@@ -36,7 +36,7 @@ describe('POST customer /sign-up and POST /log-in', () => {
     };
 
     const response = await request(app)
-      .post(`${BASE_URL}/sign-up`)
+      .post(`${BASE_URL}sign-up`)
       .send(userData);
 
     expect(response.status).toBe(201);
@@ -57,7 +57,7 @@ describe('POST customer /sign-up and POST /log-in', () => {
     };
 
     const response = await request(app)
-      .post(`${BASE_URL}/log-in`) 
+      .post(`${BASE_URL}log-in`) 
       .send(loginData);
 
     expect(response.status).toBe(200);
@@ -74,7 +74,7 @@ describe('POST customer /sign-up and POST /log-in', () => {
     };
 
     const response = await request(app)
-      .post(`${BASE_URL}/log-in`) 
+      .post(`${BASE_URL}log-in`) 
       .send(loginData);
 
     expect(response.status).toBe(401); 
@@ -94,7 +94,7 @@ describe('POST seller /registerSeller and POST /loginSeller', () => {
     };
 
     const response = await request(app)
-      .post(`${BASE_URL}/registerSeller`)
+      .post(`${BASE_URL}registerSeller`)
       .send(userData);
 
     expect(response.status).toBe(201);
@@ -115,7 +115,7 @@ describe('POST seller /registerSeller and POST /loginSeller', () => {
     };
 
     const response = await request(app)
-      .post(`${BASE_URL}/loginSeller`) 
+      .post(`${BASE_URL}loginSeller`) 
       .send(loginData);
 
     expect(response.status).toBe(200);
@@ -132,7 +132,7 @@ describe('POST seller /registerSeller and POST /loginSeller', () => {
     };
 
     const response = await request(app)
-      .post(`${BASE_URL}/loginSeller`) 
+      .post(`${BASE_URL}loginSeller`) 
       .send(loginData);
 
     expect(response.status).toBe(401); 
