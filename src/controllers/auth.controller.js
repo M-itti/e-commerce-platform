@@ -1,5 +1,5 @@
 const authService = require('../services/auth.service');
-const { status } = require('http-status');
+const { StatusCodes } = require('http-status-codes');
 
 // User Signup
 const userSignup = async (req, res, next) => {
@@ -7,7 +7,7 @@ const userSignup = async (req, res, next) => {
     const { username, password, email } = req.body;
     const result = await authService.createUser(username, password, email);
 
-    res.status(status.CREATED).json({
+    res.status(StatusCodes.CREATED).json({
       success: true,
       data: result,
     });
@@ -22,7 +22,7 @@ const userLogin = async (req, res, next) => {
     const { username, password, email} = req.body;
     const result = await authService.logUser(username, password, email);
 
-    res.status(status.OK).json({
+    res.status(StatusCodes.OK).json({
       success: true,
       data: result,
     });
@@ -37,7 +37,7 @@ const sellerSignup = async (req, res, next) => {
     const { username, password, email } = req.body;
     const result = await authService.createSeller(username, password, email);
 
-    res.status(status.CREATED).json({
+    res.status(StatusCodes.CREATED).json({
       success: true,
       data: result,
     });
@@ -52,7 +52,7 @@ const sellerLogin = async (req, res, next) => {
     const { username, password, email } = req.body;
     const result = await authService.logSeller(username, password, email);
 
-    res.status(status.OK).json({
+    res.status(StatusCodes.OK).json({
       success: true,
       data: result,
     });

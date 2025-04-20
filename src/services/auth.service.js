@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { StatusCodes } = require('http-status-codes');
 
 const User = require('../models/user.model');
 const HttpException = require('../utils/HttpException');
-const { status } = require('http-status');
 
 require('dotenv').config();
 
@@ -15,12 +15,12 @@ const TOKEN_EXPIRATION = process.env.TOKEN_EXPIRATION;
 async function createUser(username, password, email) {
   const usernameExists = await User.exists({ username });
   if (usernameExists) {
-    throw new HttpException(status.CONFLICT, "Username already exists");
+    throw new HttpException(StatusCodes.CONFLICT, "Username already exists");
   }
 
   const emailExists = await User.exists({ email });
   if (emailExists) {
-    throw new HttpException(status.CONFLICT, "Email already exists");
+    throw new HttpException(StatusCodes.CONFLICT, "Email already exists");
   }
 
   const hashedPass = await bcrypt.hash(password, SALT_ROUNDS);
@@ -36,11 +36,11 @@ async function createUser(username, password, email) {
 async function logUser(username, password, email) {
   const user = await User.findOne({ username });
   if (!user) {
-    throw new HttpException(status.UNAUTHORIZED, "Invalid credentials");
+    throw new HttpException(StatusCodes.UNAUTHORIZED, "Invalid credentials");
   }
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    throw new HttpException(status.UNAUTHORIZED, "Invalid credentials");
+    throw new HttpException(StatusCodes.UNAUTHORIZED, "Invalid credentials");
   }
 
   const token = jwt.sign({ id: user._id, username, email, role: "customer" }, JWT_SECRET, { expiresIn: TOKEN_EXPIRATION });
@@ -52,12 +52,12 @@ async function logUser(username, password, email) {
 async function createSeller(username, password, email) {
   const usernameExists = await User.exists({ username });
   if (usernameExists) {
-    throw new HttpException(status.CONFLICT, "Username already exists");
+    throw new HttpException(StatusCodes.CONFLICT, "Username already exists");
   }
 
   const emailExists = await User.exists({ email });
   if (emailExists) {
-    throw new HttpException(status.CONFLICT, "Email already exists");
+    throw new HttpException(StatusCodes.CONFLICT, "Email already exists");
   }
 
   const hashedPass = await bcrypt.hash(password, SALT_ROUNDS);
@@ -73,12 +73,12 @@ async function createSeller(username, password, email) {
 async function logSeller(username, password, email) {
   const seller = await User.findOne({ email });
   if (!seller) {
-    throw new HttpException(status.UNAUTHORIZED, "Invalid credentials");
+    throw new HttpException(StatusCodes.UNAUTHORIZED, "Invalid credentials");
   }
 
   const isMatch = await bcrypt.compare(password, seller.password);
   if (!isMatch) {
-    throw new HttpException(status.UNAUTHORIZED, "Invalid credentials");
+    throw new HttpException(StatusCodes.UNAUTHORIZED, "Invalid credentials");
   }
 
   const token = jwt.sign({ id: seller._id, username, email, role: "seller" }, JWT_SECRET, { expiresIn: TOKEN_EXPIRATION });

@@ -1,11 +1,11 @@
 const cartService = require('../services/cart.service.js');
-const { status } = require('http-status');
+const { StatusCodes } = require('http-status-codes');
 
 const getCart = async (req, res, next) => {
   try {
     const cart = await cartService.getUserCart(req.user.id);
     if (!cart) {
-      return res.status(status.NOT_FOUND).json({ message: 'Cart not found' });
+      return res.status(StatusCodes.NOT_FOUND).json({ message: 'Cart not found' });
     }
     res.json(cart);
   } catch (err) {
