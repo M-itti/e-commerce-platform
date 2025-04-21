@@ -17,6 +17,7 @@ app.use(rateLimiter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use('/api/v1', routes)
 
+/* eslint-disable-next-line no-unused-vars */
 app.use((err, req, res, next) => {
   logger.debug(`Error: ${err.message}, Stack: ${err.stack}`);
   if (err && err.name === 'UnauthorizedError') {

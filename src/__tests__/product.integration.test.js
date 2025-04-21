@@ -2,7 +2,6 @@ const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const { RedisMemoryServer } = require('redis-memory-server');
 const mongoose = require("mongoose");
-const { MongoMemoryServer } = require('mongodb-memory-server');
 const request = require('supertest');
 const app = require('../app');
 const { redisClient, connectRedis } = require('../config/redis_cache');
@@ -20,8 +19,8 @@ beforeAll(async () => {
   // redis memory server setup (hardcoded)
   redisServer = new RedisMemoryServer({
     instance: {
-        ip: process.env.REDIS_HOST,  
-        port: Number(process.env.REDIS_PORT),  
+      ip: process.env.REDIS_HOST,  
+      port: Number(process.env.REDIS_PORT),  
     },
     autoStart: false,
   });

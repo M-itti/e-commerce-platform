@@ -2,7 +2,6 @@ const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const mongoose = require("mongoose");
 const { RedisMemoryServer } = require('redis-memory-server');
-const { MongoMemoryServer } = require('mongodb-memory-server');
 const request = require('supertest');
 const app = require('../app');
 const { redisClient, connectRedis } = require('../config/redis_cache');
@@ -20,8 +19,8 @@ beforeAll(async () => {
   // redis memory server setup (hardcoded)
   redisServer = new RedisMemoryServer({
     instance: {
-        ip: process.env.REDIS_HOST,  
-        port: Number(process.env.REDIS_PORT),  
+      ip: process.env.REDIS_HOST,  
+      port: Number(process.env.REDIS_PORT),  
     },
     autoStart: false,
   });
@@ -100,7 +99,6 @@ describe('GET /seller/products', () => {
         description: 'Smartphone',
         seller: sellerId,
         category: 'Electronics',
-        seller: sellerId,
       },
       {
         name: 'T-shirt',
@@ -109,7 +107,6 @@ describe('GET /seller/products', () => {
         description: 'Cotton T-shirt',
         seller: sellerId,
         category: 'Clothing',
-        seller: sellerId,
       }
     ]);
     await redisClient.del(`seller:products:${sellerId}`);

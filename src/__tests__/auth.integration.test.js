@@ -26,7 +26,6 @@ describe('POST customer /sign-up and POST /log-in', () => {
       await collections[key].deleteMany();
     }
   });
-  let token; // Store token for login test
 
   it('should successfully sign up a new user', async () => {
     const userData = {
@@ -44,9 +43,6 @@ describe('POST customer /sign-up and POST /log-in', () => {
     expect(response.body.data.username).toBe(userData.username);
     expect(response.body.data.email).toBe(userData.email);
     expect(response.body.data.token).toBeDefined();
-
-    // Save the token for login test
-    token = response.body.data.token;
   });
 
   it('should log in with the correct credentials and return a token', async () => {
@@ -84,8 +80,6 @@ describe('POST customer /sign-up and POST /log-in', () => {
 });
 
 describe('POST seller /registerSeller and POST /loginSeller', () => {
-  let token; // Store token for login test
-
   it('should successfully sign up a new seller', async () => {
     const userData = {
       username: 'testuser',
@@ -102,9 +96,6 @@ describe('POST seller /registerSeller and POST /loginSeller', () => {
     expect(response.body.data.username).toBe(userData.username);
     expect(response.body.data.email).toBe(userData.email);
     expect(response.body.data.token).toBeDefined();
-
-    // Save the token for login test
-    token = response.body.data.token;
   });
 
   it('should log in with the correct credentials and return a token', async () => {

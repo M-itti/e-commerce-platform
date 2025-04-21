@@ -2,20 +2,21 @@ const js = require('@eslint/js');
 const globals = require('globals');
 
 module.exports = [
-  js.configs.recommended, 
+  js.configs.recommended,
   {
-    files: ['**/*.js'], 
+    files: ['**/*.js'],
     languageOptions: {
       globals: {
-        ...globals.node, 
+        ...globals.node,
+        ...globals.jest,
       },
       parserOptions: {
-        ecmaVersion: 12, 
-        sourceType: 'script', 
+        ecmaVersion: 12,
+        sourceType: 'commonjs',
       },
     },
     rules: {
-      'indent': ['error', 2], 
+      'indent': ['error', 2],
     },
   },
 ];
