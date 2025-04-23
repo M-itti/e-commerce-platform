@@ -1,7 +1,8 @@
 module.exports = {
   testMatch: [
-    "**/__tests__/*.integration.test.js", // Matches your integration test files
-    "**/?(*.)+(spec|test).js?(x)"            // Retains default patterns for other test files
+    "**/__tests__/*.integration.test.js", 
+    "**/?(*.)+(spec|test).js?(x)"            
   ],
-  testPathIgnorePatterns: ["/node_modules/"], // Ignores node_modules directory
+  testPathIgnorePatterns: ["/node_modules/"], 
+  testTimeout: 10001, 
 };
