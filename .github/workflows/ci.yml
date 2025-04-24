@@ -7,8 +7,12 @@ on:
     branches: [ '**' ]
 
 jobs:
-  lint:
+  lint-and-test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        task: [lint, test]
+
     steps:
       - uses: actions/checkout@v4
 
@@ -28,29 +32,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run ESLint
-        run: npx eslint .
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-modules-
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run Jest tests
-        run: npm test
+      - name: Run ${{ matrix.task }}
+        run: |
+          if [ "${{ matrix.task }}" = "lint" ]; then
+            npx eslint .
+          else
+            npm test
+          fi
