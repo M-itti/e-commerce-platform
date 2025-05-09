@@ -5,9 +5,9 @@ const router = express.Router()
 
 /**
  * @swagger
- * /sign-up:
+ * /auth/customers/sign-up:
  *   post:
- *     summary: Register a new user
+ *     summary: Register a new customer
  *     tags:
  *       - Auth
  *     requestBody:
@@ -18,6 +18,8 @@ const router = express.Router()
  *             type: object
  *             properties:
  *               username:
+ *                 type: string
+ *               email:
  *                 type: string
  *               password:
  *                 type: string
@@ -29,13 +31,13 @@ const router = express.Router()
  *       500:
  *         description: Internal server error.
  */
-router.post('/sign-up', auth.userSignup)
+router.post('/auth/customers/sign-up', auth.userSignup)
 
 /**
  * @swagger
- * /log-in:
+ * /auth/customers/log-in:
  *   post:
- *     summary: Authenticate a user
+ *     summary: Authenticate a customer
  *     tags:
  *       - Auth
  *     requestBody:
@@ -47,6 +49,8 @@ router.post('/sign-up', auth.userSignup)
  *             properties:
  *               username:
  *                 type: string
+ *               email:
+ *                 type: string
  *               password:
  *                 type: string
  *     responses:
@@ -57,11 +61,11 @@ router.post('/sign-up', auth.userSignup)
  *       500:
  *         description: Internal server error.
  */
-router.post('/log-in', auth.userLogin)
+router.post('/auth/customers/log-in', auth.userLogin)
 
 /**
  * @swagger
- * /registerSeller:
+ * /auth/sellers/sign-up:
  *   post:
  *     summary: Register a new seller
  *     tags:
@@ -73,7 +77,7 @@ router.post('/log-in', auth.userLogin)
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               username:
  *                 type: string
  *               email:
  *                 type: string
@@ -87,11 +91,11 @@ router.post('/log-in', auth.userLogin)
  *       500:
  *         description: Internal server error.
  */
-router.post('/registerSeller', auth.sellerSignup);
+router.post('/auth/sellers/sign-up', auth.sellerSignup);
 
 /**
  * @swagger
- * /loginSeller:
+ * /auth/sellers/log-in:
  *   post:
  *     summary: Authenticate a seller
  *     tags:
@@ -103,6 +107,8 @@ router.post('/registerSeller', auth.sellerSignup);
  *           schema:
  *             type: object
  *             properties:
+ *               username:
+ *                 type: string
  *               email:
  *                 type: string
  *               password:
@@ -115,6 +121,6 @@ router.post('/registerSeller', auth.sellerSignup);
  *       500:
  *         description: Internal server error.
  */
-router.post('/loginSeller', auth.sellerLogin);
+router.post('/auth/sellers/log-in', auth.sellerLogin);
 
 module.exports = router

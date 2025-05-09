@@ -35,7 +35,7 @@ beforeAll(async () => {
     
   // generate jwt token for testing
   const res = await request(app)
-    .post(`${BASE_URL}/registerSeller`)
+    .post(`${BASE_URL}/auth/sellers/sign-up`)
     .send({
       username: 'testuser',
       password: 'password',

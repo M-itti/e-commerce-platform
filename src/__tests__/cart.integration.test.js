@@ -36,7 +36,7 @@ beforeAll(async () => {
     
   // generate jwt token for testing
   const res = await request(app)
-    .post(`${BASE_URL}/sign-up`)
+    .post(`${BASE_URL}/auth/customers/sign-up`)
     .send({
       username: 'testuser',
       password: 'password',
@@ -102,9 +102,9 @@ describe('Shopping Cart API', () => {
 
     // Now update quantity
     const res = await request(app)
-      .put(`${BASE_URL}/cart/:productId`)
+      .put(`${BASE_URL}/cart/${productId}`)
       .set('Authorization', `Bearer ${token}`)
-      .send({ productId, quantity: 3 });
+      .send({ quantity: 3 });
 
     expect(res.statusCode).toBe(200);
     expect(res.body.products[0].quantity).toBe(3);

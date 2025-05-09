@@ -7,9 +7,8 @@ const swaggerOptions = {
   swaggerDefinition: {
     openapi: "3.0.0",
     info: {
-      title: "Express API",
+      title: "Backend shopping API",
       version: "1.0.0",
-      description: "Express API with Swagger documentation",
     },
     servers: [
       {
@@ -18,15 +17,21 @@ const swaggerOptions = {
     ],
     components: {
       securitySchemes: {
-        bearerAuth: {
+        CustomerAuth: {
           type: "http",
           scheme: "bearer",
           bearerFormat: "JWT",
+          description: "Authorization for Customer role",
+        },
+        SellerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+          description: "Authorization for Seller role",
         },
       },
     },
   },
-  // Path to the API docs
   apis: ["./routes/v1/*.js"],
 };
 

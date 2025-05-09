@@ -19,7 +19,7 @@ const router = express.Router()
  *     tags:
  *       - Seller
  *     security:
- *       - bearerAuth: []
+ *       - SellerAuth: []
  *     responses:
  *       200:
  *         description: List of seller's products.
@@ -42,7 +42,7 @@ router.get('/seller', passport.authenticate('jwt', { session: false }), roleVeri
  *     tags:
  *       - Seller
  *     security:
- *       - bearerAuth: []
+ *       - SellerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -82,7 +82,7 @@ router.post('/seller', passport.authenticate('jwt', { session: false }), roleVer
  *     tags:
  *       - Seller
  *     security:
- *       - bearerAuth: []
+ *       - SellerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -130,7 +130,7 @@ router.put('/seller/:id', passport.authenticate('jwt', { session: false }), role
  *     tags:
  *       - Seller
  *     security:
- *       - bearerAuth: []
+ *       - SellerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

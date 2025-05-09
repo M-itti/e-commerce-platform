@@ -25,7 +25,8 @@ const addToCart = async (req, res, next) => {
 
 const updateCartItem = async (req, res, next) => {
   try {
-    const { productId, quantity } = req.body;
+    const { quantity } = req.body;
+    const { productId } = req.params; 
     const cart = await cartService.updateCartItemQuantity(req.user.id, productId, quantity);
     res.json(cart);
   } catch (err) {

@@ -20,7 +20,7 @@ const router = express.Router();
  *     tags:
  *       - Cart
  *     security:
- *       - bearerAuth: []
+ *       - CustomerAuth: []
  *     responses:
  *       200:
  *         description: List of products in the customer's cart.
@@ -37,18 +37,37 @@ router.get('/cart', passport.authenticate('jwt', { session: false }), roleVerifi
 
 /**
  * @swagger
- * /cart:
- *   post:
- *     summary: Add a product to the authenticated customer's cart
+ * /cart/{productId}:
+ *   put:
+ *     summary: Update the quantity of a product in the authenticated customer's cart
  *     tags:
  *       - Cart
  *     security:
- *       - bearerAuth: []
+ *       - CustomerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the product to update.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - quantity
+ *             properties:
+ *               quantity:
+ *                 type: integer
+ *                 example: 2
  *     responses:
- *       201:
- *         description: Product successfully added to the cart.
+ *       200:
+ *         description: Product quantity successfully updated.
  *       400:
- *         description: Bad Request - Invalid product details.
+ *         description: Bad Request - Invalid product details or product not found in cart.
  *       401:
  *         description: Unauthorized - User not authenticated.
  *       403:
@@ -66,7 +85,7 @@ router.post('/cart', passport.authenticate('jwt', { session: false }), roleVerif
  *     tags:
  *       - Cart
  *     security:
- *       - bearerAuth: []
+ *       - CustomerAuth: []
  *     parameters:
  *       - in: path
  *         name: productId
@@ -94,7 +113,7 @@ router.put('/cart/:productId', passport.authenticate('jwt', { session: false }),
  *     tags:
  *       - Cart
  *     security:
- *       - bearerAuth: []
+ *       - CustomerAuth: []
  *     parameters:
  *       - in: path
  *         name: productId
@@ -122,7 +141,7 @@ router.delete('/cart/:productId', passport.authenticate('jwt', { session: false 
  *     tags:
  *       - Cart
  *     security:
- *       - bearerAuth: []
+ *       - CustomerAuth: []
  *     responses:
  *       200:
  *         description: All items successfully removed from the cart.
